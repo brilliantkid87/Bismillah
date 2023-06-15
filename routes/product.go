@@ -2,6 +2,7 @@ package routes
 
 import (
 	"waysbean/handlers"
+	"waysbean/pkg/middleware"
 	"waysbean/pkg/mysql"
 	"waysbean/repositories"
 
@@ -10,8 +11,8 @@ import (
 
 func ProductRoutes(e *echo.Group) {
 	productRepository := repositories.NewProductRepository(mysql.DB)
-	h := handlers.NewProductHandler(productRepository)
+	h := handlers.HandlerProduct(productRepository)
 
 	e.GET("/products", h.FindProduct)
-	e.POST("/product", h.CreateProduct)
+	e.POST("/product", middleware.UploadFile(h.CreateProduct))
 }

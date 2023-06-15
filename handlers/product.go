@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 	productdto "waysbean/dto/product"
 	dto "waysbean/dto/result"
 	"waysbean/models"
@@ -10,15 +12,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type ProductHandler struct {
+type handlerProduct struct {
 	ProductRepository repositories.ProductRepository
 }
 
-func NewProductHandler(productRepository repositories.ProductRepository) *ProductHandler {
-	return &ProductHandler{ProductRepository: productRepository}
+func HandlerProduct(ProductRepository repositories.ProductRepository) *handlerProduct {
+	return &handlerProduct{ProductRepository}
 }
 
-func (h *ProductHandler) FindProduct(c echo.Context) error {
+func (h *handlerProduct) FindProduct(c echo.Context) error {
 	products, err := h.ProductRepository.FindProduct()
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
@@ -27,26 +29,61 @@ func (h *ProductHandler) FindProduct(c echo.Context) error {
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: products})
 }
 
-func (h *ProductHandler) CreateProduct(c echo.Context) error {
-	request := new(productdto.CreateProductRequest)
-	if err := c.Bind(request); err != nil {
-		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
+func (h *handlerProduct) CreateProduct(c echo.Context) error {
+	dataFile := c.Get("dataFile").(string)
+
+	price, _ := strconv.Atoi(c.FormValue("price"))
+	stock, _ := strconv.Atoi(c.FormValue("stock"))
+
+	request := productdto.CreateProductRequest{
+		Name:        c.FormValue("name"),
+		Description: c.FormValue("description"),
+		Price:       price,
+		Image:       dataFile,
+		Stock:       stock,
 	}
+
+	fmt.Println(dataFile)
+
+	// validation := validator.New()
+	// err := validation.Struct(request)
+	// if err != nil {
+	// 	return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+	// 		Code:    http.StatusBadRequest,
+	// 		Message: err.Error(),
+	// 	})
+	// // }
+
+	// userLogin := c.Get("userLogin")
+	// userRole := userLogin.(jwt.MapClaims)["role"].(string)
+
+	// if userRole != "admin" {
+	// 	return c.JSON(http.StatusUnauthorized, dto.ErrorResult{
+	// 		Code:    http.StatusUnauthorized,
+	// 		Message: "Anda bukan admin!",
+	// 	})
+	// }
 
 	product := models.Product{
 		Name:        request.Name,
 		Price:       request.Price,
 		Description: request.Description,
 		Stock:       request.Stock,
-		Image:       request.Image,
+		Image:       dataFile,
 	}
 
 	data, err := h.ProductRepository.CreateProduct(product)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{Code: http.StatusInternalServerError, Message: err.Error()})
+		return c.JSON(http.StatusInternalServerError, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
 	}
 
-	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: convertResponseProduct(data)})
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: convertResponseProduct(data),
+	})
 
 }
 

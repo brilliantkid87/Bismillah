@@ -60,9 +60,8 @@ func (h *userHandler) CreateUser(c echo.Context) error {
 
 func convertResponseUser(u models.User) userdto.UserResponse {
 	return userdto.UserResponse{
-		ID:       u.ID,
-		Name:     u.Name,
-		Email:    u.Email,
-		Password: u.Password,
+		ID:    u.ID,
+		Name:  u.Name,
+		Email: u.Email,
 	}
 }

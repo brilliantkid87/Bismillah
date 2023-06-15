@@ -4,7 +4,7 @@ import "time"
 
 type Cart struct {
 	ID            int                 `json:"id" gorm:"primary_key:auto_increment"`
-	TransactionID int                 `json:"transaction_id" gorm:"type: int" form:"tranasaction_id constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	TransactionID int                 `json:"transaction_id" gorm:"type: int" form:"transaction_id constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Transaction   TransactionResponse `json:"-"`
 	ProductID     int                 `json:"product_id" gorm:"type: int" form:"product_id"`
 	Product       ProductResponse     `json:"products"`
