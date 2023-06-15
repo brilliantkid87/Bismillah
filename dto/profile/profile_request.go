@@ -1,9 +1,21 @@
 package profiledto
 
+import "time"
+
 type CreateProfileRequest struct {
-	ID      int    `json:"id" gorm:"primary_key:auto_increment"`
-	Image   string `json:"image" gorm:"type: varchar(255)"`
-	Phone   string `json:"phone" gorm:"type: varchar(255)"`
-	Address string `json:"address" gorm:"type: varchar(255)"`
-	UserID  int    `json:"user_id"`
+	Phone        string    `json:"phone" form:"phone"`
+	Address      string    `json:"address" form:"address"`
+	UserID       int       `json:"user_id" form:"user_id"`
+	ImageProfile string    `json:"image_profile" form:"image_profile"`
+	CreatedAt    time.Time `json:"-"`
+	UpdatedAt    time.Time `json:"-"`
+}
+
+type UpdateProfileRequest struct {
+	Name         string `json:"name" form:"name"`
+	Phone        string `json:"phone" form:"phone" `
+	Address      string `json:"address" form:"address"`
+	UserID       int    `json:"user_id" form:"user_id"`
+	PostCode     string `json:"post_code" form:"post_code"`
+	ImageProfile string `json:"image_profile" form:"image_profile"`
 }

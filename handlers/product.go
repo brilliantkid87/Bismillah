@@ -34,10 +34,11 @@ func (h *ProductHandler) CreateProduct(c echo.Context) error {
 	}
 
 	product := models.Product{
-		Name:        request.ProductName,
+		Name:        request.Name,
 		Price:       request.Price,
 		Description: request.Description,
 		Stock:       request.Stock,
+		Image:       request.Image,
 	}
 
 	data, err := h.ProductRepository.CreateProduct(product)
@@ -52,9 +53,10 @@ func (h *ProductHandler) CreateProduct(c echo.Context) error {
 func convertResponseProduct(u models.Product) productdto.ProductResponse {
 	return productdto.ProductResponse{
 		ID:          u.ID,
-		ProductName: u.Name,
+		Name:        u.Name,
 		Price:       u.Price,
 		Description: u.Description,
 		Stock:       u.Stock,
+		Image:       u.Image,
 	}
 }

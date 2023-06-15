@@ -1,8 +1,11 @@
 package cartdto
 
+import "time"
+
 type CartResponse struct {
-	ID            int `json:"id"`
-	ProductID     int `json:"product_id" gorm:"type: int"`
-	OrderQuantity int `json:"order_quantity" gorm:"type: int"`
-	UserID        int `json:"user_id"`
+	ID            int       `json:"id"`
+	ProductID     int       `json:"product_id" form:"product_id"`
+	OrderQuantity int       `json:"order_quantity" form:"order_quantity"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
 }

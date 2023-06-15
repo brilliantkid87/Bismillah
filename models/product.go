@@ -1,16 +1,20 @@
 package models
 
+import "time"
+
 type Product struct {
-	ID          int                   `json:"id" gorm:"primary_key:auto_increment"`
-	Name        string                `json:"name" gorm:"type: varchar(255)"`
-	Price       int                   `json:"price" gorm:"type: int"`
-	Description string                `json:"description" gorm:"type: text"`
-	Image       string                `json:"image" gorm:"type: varchar(255)"`
-	Stock       int                   `json:"stock" gorm:"type: int"`
-	Cart        []CartProductResponse `json:"cart"`
+	ID          int                 `json:"id" gorm:"primary_key:auto_increment"`
+	Name        string              `json:"name" form:"name" gorm:"type: varchar(255)"`
+	Price       int                 `json:"price" form:"price" gorm:"type: int"`
+	Description string              `json:"description" form:"description" gorm:"type: varchar(255)"`
+	Stock       int                 `json:"stock" form:"stock" gorm:"type: int"`
+	Image       string              `json:"image" form:"image" gorm:"type: varchar(255)"`
+	CreatedAt   time.Time           `json:"created_at"`
+	UpdatedAt   time.Time           `json:"updated_at"`
+	Cart        CartProductResponse `json:"-"`
 }
 
-type ProductCartResponse struct {
+type ProductResponse struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
 	Price       int    `json:"price"`
@@ -19,6 +23,6 @@ type ProductCartResponse struct {
 	Stock       int    `json:"stock"`
 }
 
-func (ProductCartResponse) TableName() string {
+func (ProductResponse) TableName() string {
 	return "products"
 }

@@ -1,13 +1,22 @@
 package transactiondto
 
+import (
+	"time"
+	"waysbean/models"
+)
+
 type TransactionResponse struct {
-	UserID          int    `json:"user_id"`
-	Name            string `json:"name" gorm:"type: varchar(255)"`
-	Email           string `json:"email" gorm:"type: varchar(255)"`
-	Phone           string `json:"phone" gorm:"type: varchar(255)"`
-	Address         string `json:"address" gorm:"type: varchar(255)"`
-	TotalCounterQty int    `json:"total_counterqty"`
-	TotalPrice      int    `json:"total_price"`
-	Status          string `json:"status" gorm:"type: varchar(255)"`
-	ProductID       int    `json:"product_id"`
+	ID         int                   `json:"id"`
+	User       models.UserResponse   `json:"user"`
+	Name       string                `json:"name"  form:"name"`
+	Email      string                `json:"email"  form:"email"`
+	Phone      string                `json:"phone"  form:"phone"`
+	Address    string                `json:"address"  form:"address"`
+	Attachment string                `json:"attachment"  form:"attachment"`
+	Status     string                `json:"status"  form:"attachment"`
+	SubTotal   int                   `json:"sub_total"`
+	TotalQty   int                   `json:"total_qty"`
+	CreatedAt  time.Time             `json:"created_at"`
+	UpdatedAt  time.Time             `json:"updated_at"`
+	Cart       []models.CartResponse `json:"products"`
 }

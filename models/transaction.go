@@ -1,28 +1,34 @@
 package models
 
+import "time"
+
 type Transaction struct {
-	ID                 int                     `json:"id" gorm:"primary_key:auto_increment"`
-	UserID             int                     `json:"user_id"`
-	User               UserTransactionResponse `json:"user"`
-	Name               string                  `json:"name" gorm:"type: varchar(255)"`
-	Email              string                  `json:"email" gorm:"type: varchar(255)"`
-	Phone              string                  `json:"phone" gorm:"type: varchar(255)"`
-	Address            string                  `json:"address" gorm:"type: varchar(255)"`
-	ProductID          int                     `json:"product_id"`
-	ProductTransaction []ProductTransaction    `json:"products" gorm:"foreignKey:TransactionID"`
-	TotalCounterQty    int                     `json:"total_counterqty" gorm:"type:int"`
-	TotalPrice         int                     `json:"total_price" gorm:"type: int"`
-	Status             string                  `json:"status" gorm:"type: varchar(255)"`
+	ID        int            `json:"id"`
+	UserID    int            `json:"user_id" gorm:"type: int" form:"user_id"`
+	User      UserResponse   `json:"users"`
+	Name      string         `json:"name" gorm:"type: varchar(255)" form:"name"`
+	Email     string         `json:"email" gorm:"type: varchar(255)" form:"email"`
+	Phone     string         `json:"phone" gorm:"type: varchar(255)" form:"phone"`
+	PostCode  string         `json:"post_code" gorm:"type: varchar(255)" form:"post_code"`
+	Address   string         `json:"address" gorm:"type: varchar(255)" form:"address"`
+	Status    string         `json:"status" gorm:"type: varchar(255)" form:"status"`
+	TotalQty  int            `json:"total_qty" gorm:"type: int" form:"total_qty"`
+	SubTotal  int            `json:"sub_total" gorm:"type: int" form:"sub_total"`
+	CreatedAt time.Time      `json:"-"`
+	UpdatedAt time.Time      `json:"updated_at"`
+	Cart      []CartResponse `json:"carts"`
 }
 
-type TransactionUserResponse struct {
-	ID              int    `json:"id"`
-	UserID          int    `json:"user_id"`
-	TotalCounterQty int    `json:"total_counterqty"`
-	TotalPrice      int    `json:"total_price"`
-	Status          string `json:"status" gorm:"type: varchar(255)"`
+type TransactionResponse struct {
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Phone    int    `json:"phone"`
+	PostCode string `json:"post_code"`
+	Address  string `json:"address"`
+	UserID   string `json:"-"`
 }
 
-func (TransactionUserResponse) TableName() string {
+func (TransactionResponse) TableName() string {
 	return "transactions"
 }

@@ -1,13 +1,22 @@
 package transactiondto
 
 type CreateTransactionRequest struct {
-	UserID          int    `json:"user_id"`
-	Name            string `json:"name" gorm:"type: varchar(255)"`
-	Email           string `json:"email" gorm:"type: varchar(255)"`
-	Phone           string `json:"phone" gorm:"type: varchar(255)"`
-	Address         string `json:"address" gorm:"type: varchar(255)"`
-	TotalCounterQty int    `json:"total_counterqty"`
-	TotalPrice      int    `json:"total_price"`
-	ProductID       int    `json:"product_id"`
-	Status          string `json:"status" gorm:"type: varchar(255)"`
+	UserID   int    `json:"user_id" form:"user_id"`
+	Name     string `json:"name" form:"name"`
+	Email    string `json:"email"  form:"email"`
+	Phone    string `json:"phone"  form:"phone"`
+	PostCode string `json:"post_code"  form:"post_code"`
+	Address  string `json:"address"  form:"address"`
+	Status   string `json:"status"  form:"status"`
+}
+
+type UpdateTransactionRequest struct {
+	Name     string `json:"name" form:"name"`
+	Email    string `json:"email"  form:"email"`
+	Phone    string `json:"phone"  form:"phone"`
+	PostCode string `json:"post_code"  form:"post_code"`
+	Address  string `json:"address"  form:"address"`
+	Status   string `json:"status"  form:"status"`
+	TotalQty int    `json:"total_qty" gorm:"type: int" form:"total_qty"`
+	SubTotal int    `json:"sub_total" gorm:"type: int" form:"sub_total"`
 }

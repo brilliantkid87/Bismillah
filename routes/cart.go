@@ -13,5 +13,5 @@ func CartRoutes(e *echo.Group) {
 	h := handlers.HandlerCart(cartRepository)
 
 	e.GET("/carts", h.FindCart)
-	// e.POST("/product", h.c)
+	e.POST("/cart", h.CreateCart)
 }

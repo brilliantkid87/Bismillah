@@ -1,7 +1,12 @@
 package cartdto
 
-type CreateCardRequest struct {
-	ProductID     int `json:"product_id" gorm:"type: int"`
-	OrderQuantity int `json:"order_quantity" gorm:"type: int"`
-	UserID        int `json:"user_id"`
+type CreateCartRequest struct {
+	TransactionID int `json:"transaction_id" form:"transaction_id"`
+	ProductID     int `json:"product_id" form:"product_id"`
+	OrderQuantity int `json:"order_quantity" form:"order_quantity"`
+}
+
+type UpdateCartRequest struct {
+	ProductId     int `json:"product_id" form:"product_id"`
+	OrderQuantity int `json:"order_quantity" form:"order_quantity"`
 }

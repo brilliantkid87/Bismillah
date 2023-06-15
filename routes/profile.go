@@ -13,5 +13,5 @@ func ProfileRoutes(e *echo.Group) {
 	h := handlers.HandlerProfile(profileRepository)
 
 	e.GET("/profiles", h.FindProfile)
-	// e.POST("/product", h.)
+	e.POST("/profile", h.CreateProfile)
 }

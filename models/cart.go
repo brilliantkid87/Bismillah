@@ -1,32 +1,29 @@
 package models
 
+import "time"
+
 type Cart struct {
 	ID            int                 `json:"id" gorm:"primary_key:auto_increment"`
-	UserID        int                 `json:"user_id" gorm:"type: int"`
-	User          UserCartResponse    `json:"user"`
-	ProductID     int                 `json:"product_id" gorm:"type: int"`
-	Product       ProductCartResponse `json:"product"`
-	OrderQuantity int                 `json:"order_quantity" gorm:"type: int"`
+	TransactionID int                 `json:"transaction_id" gorm:"type: int" form:"tranasaction_id constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Transaction   TransactionResponse `json:"-"`
+	ProductID     int                 `json:"product_id" gorm:"type: int" form:"product_id"`
+	Product       ProductResponse     `json:"products"`
+	OrderQuantity int                 `json:"order_quantity" gorm:"type: int" form:"order_quantity"`
+	CreatedAt     time.Time           `json:"-"`
+	UpdatedAt     time.Time           ` json:"-"`
 }
 
-type CartUserResponse struct {
-	ID            int `json:"id"`
+type CartResponse struct {
+	ProductID     int             `json:"product_id"`
+	Product       ProductResponse `json:"products"`
+	OrderQuantity int             `json:"order_quantity"`
+	TransactionID int             `json:"transaction_id"`
+}
+type CartProductResponse struct {
 	ProductID     int `json:"product_id"`
 	OrderQuantity int `json:"order_quantity"`
-	UserID        int `json:"user_id"`
 }
 
-type CartProductResponse struct {
-	ProductID     int                 `json:"-"`
-	Product       ProductCartResponse `json:"product"`
-	OrderQuantity int                 `json:"order_quantity"`
-	UserID        int                 `json:"user_id"`
-}
-
-func (CartUserResponse) TableName() string {
-	return "carts"
-}
-
-func (CartProductResponse) TableName() string {
+func (CartResponse) TableName() string {
 	return "carts"
 }

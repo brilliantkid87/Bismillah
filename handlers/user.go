@@ -2,9 +2,8 @@ package handlers
 
 import (
 	"net/http"
-	"strconv"
 	dto "waysbean/dto/result"
-	usersdto "waysbean/dto/user"
+	userdto "waysbean/dto/user"
 	"waysbean/models"
 	"waysbean/repositories"
 
@@ -28,19 +27,19 @@ func (h *userHandler) FindUsers(c echo.Context) error {
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: users})
 }
 
-func (h *userHandler) GetUser(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
+// func (h *userHandler) GetUser(c echo.Context) error {
+// 	id, _ := strconv.Atoi(c.Param("id"))
 
-	user, err := h.UserRepository.GetUser(id)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
-	}
+// 	user, err := h.UserRepository.GetUser(id)
+// 	if err != nil {
+// 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
+// 	}
 
-	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: user})
-}
+// 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: user})
+// }
 
 func (h *userHandler) CreateUser(c echo.Context) error {
-	request := new(usersdto.CreateUserRequest)
+	request := new(userdto.CreateUserRequest)
 	if err := c.Bind(request); err != nil {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
 	}
@@ -59,11 +58,11 @@ func (h *userHandler) CreateUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: convertResponseUser(data)})
 }
 
-func convertResponseUser(u models.User) usersdto.UserResponse {
-	return usersdto.UserResponse{
-		ID:     u.ID,
-		Name:   u.Name,
-		Email:  u.Email,
-		CartID: u.CartID,
+func convertResponseUser(u models.User) userdto.UserResponse {
+	return userdto.UserResponse{
+		ID:       u.ID,
+		Name:     u.Name,
+		Email:    u.Email,
+		Password: u.Password,
 	}
 }
