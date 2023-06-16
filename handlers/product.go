@@ -87,6 +87,22 @@ func (h *handlerProduct) CreateProduct(c echo.Context) error {
 
 }
 
+func (h *handlerProduct) GetProduct(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	product, err := h.ProductRepository.GetProduct(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: convertResponseProduct(product),
+	})
+}
+
 func convertResponseProduct(u models.Product) productdto.ProductResponse {
 	return productdto.ProductResponse{
 		ID:          u.ID,

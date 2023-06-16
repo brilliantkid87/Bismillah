@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 	cartdto "waysbean/dto/cart"
 	dto "waysbean/dto/result"
 	"waysbean/models"
@@ -34,8 +35,8 @@ func (h *handlerCard) CreateCart(c echo.Context) error {
 	}
 
 	cart := models.Cart{
-		TransactionID: request.TransactionID,
-		ProductID:     request.ProductID,
+		// TransactionID: request.TransactionID,
+		// ProductID:     request.ProductID,
 		OrderQuantity: request.OrderQuantity,
 	}
 
@@ -47,10 +48,26 @@ func (h *handlerCard) CreateCart(c echo.Context) error {
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: convertResponseCart(data)})
 }
 
+func (h *handlerCard) GetCart(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	cart, err := h.CartRepository.GetCart(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{
+		Code: http.StatusOK,
+		Data: convertResponseCart(cart),
+	})
+}
+
 func convertResponseCart(u models.Cart) cartdto.CartResponse {
 	return cartdto.CartResponse{
-		ID:            u.ID,
-		ProductID:     u.ProductID,
+		ID: u.ID,
+		// ProductID:     u.ProductID,
 		OrderQuantity: u.OrderQuantity,
 	}
 }

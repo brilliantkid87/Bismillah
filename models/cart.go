@@ -7,7 +7,7 @@ type Cart struct {
 	TransactionID int                 `json:"transaction_id" gorm:"type: int" form:"transaction_id constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Transaction   TransactionResponse `json:"-"`
 	ProductID     int                 `json:"product_id" gorm:"type: int" form:"product_id"`
-	Product       ProductResponse     `json:"products"`
+	Product       ProductResponse     `json:"products" `
 	OrderQuantity int                 `json:"order_quantity" gorm:"type: int" form:"order_quantity"`
 	CreatedAt     time.Time           `json:"-"`
 	UpdatedAt     time.Time           ` json:"-"`

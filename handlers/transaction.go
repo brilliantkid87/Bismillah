@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 	dto "waysbean/dto/result"
 	transactiondto "waysbean/dto/transaction"
@@ -9,7 +10,6 @@ import (
 	"waysbean/repositories"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 )
 
@@ -42,8 +42,8 @@ func (h *handlerTransaction) CreateTransaction(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
 	}
 
-	userLogin := c.Get("userLogin")
-	userId := userLogin.(jwt.MapClaims)["id"].(float64)
+	// userLogin := c.Get("userLogin")
+	// userId := userLogin.(jwt.MapClaims)["id"].(float64)
 
 	var transactionIsMatch = false // true
 	var transactionId int
@@ -57,8 +57,8 @@ func (h *handlerTransaction) CreateTransaction(c echo.Context) error {
 	}
 
 	transaction := models.Transaction{
-		ID:       transactionId,
-		UserID:   int(userId),
+		ID: transactionId,
+		// UserID:   int(userId),
 		Name:     request.Name,
 		Email:    request.Email,
 		Address:  request.Address,
@@ -74,6 +74,20 @@ func (h *handlerTransaction) CreateTransaction(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: convertResponseTransaction(data)})
 
+}
+
+func (h *handlerTransaction) GetTransactionByUser(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	// var transaction models.Transaction
+	transaction, err := h.TransactionRepository.GetTransactionByUser(id)
+
+	// fmt.Println(transaction)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: transaction})
 }
 
 func convertResponseTransaction(u models.Transaction) transactiondto.TransactionResponse {

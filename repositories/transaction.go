@@ -10,6 +10,7 @@ type TransactionRepository interface {
 	FindTransaction() ([]models.Transaction, error)
 	CreateTransaction(transaction models.Transaction) (models.Transaction, error)
 	GetTransaction(id int) (models.Transaction, error)
+	GetTransactionByUser(ID int) ([]models.Transaction, error)
 }
 
 func RepositoryTransaction(db *gorm.DB) *repository {
@@ -33,6 +34,13 @@ func (r *repository) GetTransaction(ID int) (models.Transaction, error) {
 
 func (r *repository) CreateTransaction(transaction models.Transaction) (models.Transaction, error) {
 	err := r.db.Create(&transaction).Error
+
+	return transaction, err
+}
+
+func (r *repository) GetTransactionByUser(ID int) ([]models.Transaction, error) {
+	var transaction []models.Transaction
+	err := r.db.Where("user_id =?", ID).Preload("User").Find(&transaction).Error
 
 	return transaction, err
 }
